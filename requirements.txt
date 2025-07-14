@@ -12,4 +12,7 @@ wandb
 # Installed separately: JAX
 # jax==0.4.24
 # and Torch CPU
-# torch
+# torch==2.3.0
+# torchvision==0.18.0
+# torchaudio==2.3.0
+# torchtext==0.18.0
