@@ -28,7 +28,8 @@ To run the code on your own machine, run `pip install -r requirements.txt`. The 
 JAX can be tricky; further instructions are available on how to install it
 [here](https://github.com/google/jax#installation). PyTorch also needs to be installed separately
 because of interference issues with jax: install the CPU version of pytorch from
-[this page](https://pytorch.org/get-started/locally/).
+[this page](https://pytorch.org/get-started/locally/). Note that torchtext is no longer maintained,
+so torch needs to be downgraded. The versions provided in the requirements file should be fine.
 
 ### Data Download
 
