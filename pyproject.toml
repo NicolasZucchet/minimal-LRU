@@ -1,0 +1,24 @@
+[project]
+name = "minimal-lru"
+version = "0.1.0"
+description = "Minimal LRU implementation"
+requires-python = ">=3.11"
+dependencies = [
+    "chex",
+    "einops",
+    "flax==0.11.0",
+    "tensorflow-datasets",
+    "torchvision @ https://download.pytorch.org/whl/cpu/torchvision-0.18.0%2Bcpu-cp311-cp311-linux_x86_64.whl",
+    "torchaudio @ https://download.pytorch.org/whl/cpu/torchaudio-2.3.0%2Bcpu-cp311-cp311-linux_x86_64.whl",
+    "torchtext @ https://download.pytorch.org/whl/cpu/torchtext-0.18.0%2Bcpu-cp311-cp311-linux_x86_64.whl",
+    "torch @ https://download.pytorch.org/whl/cpu/torch-2.3.0%2Bcpu-cp311-cp311-linux_x86_64.whl",
+    "pydub",
+    "datasets",
+    "tqdm",
+    "wandb",
+    "jax[cuda12]==0.6.2",
+    "jaxlib==0.6.2",
+]
+
+[tool.setuptools.packages.find]
+where = ["lru"]

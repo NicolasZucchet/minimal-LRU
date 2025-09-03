@@ -24,12 +24,21 @@ choices (e.g. on type of nonlinear processing in a layer), we refer to the S5 co
 
 ## Requirements & Installation
 
-To run the code on your own machine, run `pip install -r requirements.txt`. The GPU installation of
-JAX can be tricky; further instructions are available on how to install it
-[here](https://github.com/google/jax#installation). PyTorch also needs to be installed separately
-because of interference issues with jax: install the CPU version of pytorch from
-[this page](https://pytorch.org/get-started/locally/). Note that torchtext is no longer maintained,
-so torch needs to be downgraded. The versions provided in the requirements file should be fine.
+This project uses `uv` for dependency management. First, install `uv`:
+
+```bash
+pip install uv
+```
+
+Then, create a virtual environment and install the dependencies:
+
+```bash
+uv venv -p python3.11
+source .venv/bin/activate
+uv pip install -e .
+```
+
+The `uv` config uses the CUDA12 version of JAX. It needs to be updated when using other CUDA versions or when being on CPU or TPU.
 
 ### Data Download
 
