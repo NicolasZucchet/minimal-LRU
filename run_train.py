@@ -55,6 +55,7 @@ if __name__ == "__main__":
     parser.add_argument("--r_min", type=float, default=0.0, help="|lambda|_min for LRU")
     parser.add_argument("--r_max", type=float, default=1.0, help="|lambda|_max for LRU")
     parser.add_argument("--norm", type=str, default="batch", help="Type of normalization")
+    parser.add_argument("--prenorm", type=str2bool, default=True, help="Use pre-normalization")
 
     # Optimization Parameters
     parser.add_argument("--batch_size", type=int, default=64, help="Batch size")

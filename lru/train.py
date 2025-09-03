@@ -89,6 +89,7 @@ def train(args):
             dropout=args.p_dropout,
             pooling=args.pooling,
             norm=args.norm,
+            prenorm=args.prenorm,
             multidim=1 + dense_targets,
         )
 

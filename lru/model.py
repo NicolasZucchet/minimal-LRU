@@ -102,10 +102,11 @@ class SequenceLayer(nn.Module):
     d_model: int  # model size
     dropout: float = 0.0  # dropout probability
     norm: str = "layer"  # which normalization to use
-    training: bool = True  # in training mode (dropout in trainign mode only)
+    prenorm: bool = False  # use prenorm or postnorm
+    training: bool = True  # in training mode (for dropout)
 
     def setup(self):
-        """Initializes the ssm, layer norm and dropout"""
+        """Initializes the LRU, normalization and dropout"""
         self.seq = self.lru()
         self.out1 = nn.Dense(self.d_model)
         self.out2 = nn.Dense(self.d_model)
@@ -118,12 +119,17 @@ class SequenceLayer(nn.Module):
         self.drop = nn.Dropout(self.dropout, broadcast_dims=[0], deterministic=not self.training)
 
     def __call__(self, inputs):
-        x = self.normalization(inputs)  # pre normalization
+        x = inputs
+        if self.prenorm:
+            x = self.normalization(x)  # pre normalization
         x = self.seq(x)  # call LRU
         x = self.drop(nn.gelu(x))
         x = self.out1(x) * jax.nn.sigmoid(self.out2(x))  # GLU
         x = self.drop(x)
-        return inputs + x  # skip connection
+        x = inputs + x  # skip connection
+        if not self.prenorm:
+            x = self.normalization(x)
+        return x
 
 
 class StackedEncoderModel(nn.Module):
@@ -135,6 +141,7 @@ class StackedEncoderModel(nn.Module):
     dropout: float = 0.0
     training: bool = True
     norm: str = "batch"
+    prenorm: bool = False
 
     def setup(self):
         self.encoder = nn.Dense(self.d_model)
@@ -145,6 +152,7 @@ class StackedEncoderModel(nn.Module):
                 dropout=self.dropout,
                 training=self.training,
                 norm=self.norm,
+                prenorm=self.prenorm,
             )
             for _ in range(self.n_layers)
         ]
@@ -166,7 +174,8 @@ class ClassificationModel(nn.Module):
     dropout: float = 0.0
     training: bool = True
     pooling: str = "mean"  # pooling mode
-    norm: str = "batch"  # type of normaliztion
+    norm: str = "batch"  # type of normalization
+    prenorm: bool = False  # use prenorm or postnorm
     multidim: int = 1  # number of outputs
 
     def setup(self):
@@ -177,6 +186,7 @@ class ClassificationModel(nn.Module):
             dropout=self.dropout,
             training=self.training,
             norm=self.norm,
+            prenorm=self.prenorm,
         )
         self.decoder = nn.Dense(self.d_output * self.multidim)
 
